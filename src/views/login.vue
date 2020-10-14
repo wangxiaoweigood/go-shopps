@@ -5,10 +5,10 @@
         <img src="../assets/微信图片_20201014185926.jpg" alt="" />
       </div>
       <el-form ref="form" :rules="rules" :model="LoginForm" class="login_form">
-        <el-form-item prop="account" :model="LoginForm">
+        <el-form-item prop="username">
           <el-input
             placeholder="请输入内容"
-            v-model="LoginForm.account"
+            v-model="LoginForm.username"
             class="login_account"
           ></el-input>
         </el-form-item>
@@ -22,7 +22,7 @@
         ></el-form-item>
         <el-form-item class="login_but">
           <el-button @click="Login" type="primary">登录</el-button>
-          <el-button type="info">重置</el-button>
+          <el-button type="info" @click="reset">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -34,8 +34,8 @@ export default {
   data () {
     return {
       LoginForm: {
-        account: '', // 账户
-        password: '' // 密码
+        username: 'admin', // 账户
+        password: '123456' // 密码
       },
       rules: {
         account: [
@@ -51,8 +51,30 @@ export default {
   },
 
   methods: {
+    // 点击重置按钮去重置表单
+    reset: function () {
+      //   console.log(this)
+      this.$refs.form.resetFields()
+    },
+    // 点击登录按钮去登录表单
     Login: function () {
-      console.log(this.LoginForm.value)
+      //   console.log(this.$refs.form)
+      this.$refs.form.validate(async (val) => {
+        // console.log(val)
+        if (!val) {
+          return console.log('输入错误')
+        }
+        const { data: res } = await this.$http.post('login', this.LoginForm)
+        // console.log(res)
+        //   console.log(this.LoginForm)
+        if (res.meta.status !== 200) {
+          return this.$message.error('登录失败')
+        }
+        this.$message.success('登录成功')
+        console.log('登录成功')
+        window.sessionStorage.setItem('tokon', res.data.tokon)
+        this.$router.push('/home')
+      })
     }
   }
 }

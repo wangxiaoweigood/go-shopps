@@ -1,5 +1,9 @@
 <template>
-  <div></div>
+  <div>
+    <!-- 占位符主页 -->
+    111
+    <div></div>
+  </div>
 </template>
 
 <script>
