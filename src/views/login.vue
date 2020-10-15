@@ -7,19 +7,21 @@
       <el-form ref="form" :rules="rules" :model="LoginForm" class="login_form">
         <el-form-item prop="username">
           <el-input
+            prefix-icon=" iconfont icon-user"
+            class="login_account"
             placeholder="请输入内容"
             v-model="LoginForm.username"
-            class="login_account"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
             placeholder="请输入密码"
             v-model="LoginForm.password"
+            prefix-icon="iconfont icon-3702mima"
             class="login_password"
             show-password
-          ></el-input
-        ></el-form-item>
+          ></el-input>
+        </el-form-item>
         <el-form-item class="login_but">
           <el-button @click="Login" type="primary">登录</el-button>
           <el-button type="info" @click="reset">重置</el-button>
@@ -65,14 +67,15 @@ export default {
           return console.log('输入错误')
         }
         const { data: res } = await this.$http.post('login', this.LoginForm)
-        // console.log(res)
+
         //   console.log(this.LoginForm)
         if (res.meta.status !== 200) {
           return this.$message.error('登录失败')
         }
         this.$message.success('登录成功')
         console.log('登录成功')
-        window.sessionStorage.setItem('tokon', res.data.tokon)
+        window.sessionStorage.setItem('token', res.data.token)
+        console.log(res.data.token)
         this.$router.push('/home')
       })
     }
@@ -120,12 +123,24 @@ export default {
   }
   .login_account {
     margin-top: 80px;
+    // position: absolute;
     // padding-bottom: 25px;
   }
   .login_but {
     position: absolute;
     bottom: 0%;
     right: 6%;
+  }
+  .login_icon {
+    width: 20px;
+    height: 20px;
+    img {
+      width: 100%;
+    }
+  }
+  .icon-user {
+    position: relative;
+    right: 0;
   }
 }
 </style>

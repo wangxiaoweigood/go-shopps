@@ -1,14 +1,15 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Login from '../views/login.vue'
-import Home from '../components/home.vue'
+import Vue from 'vue'// 创建vue
+import VueRouter from 'vue-router' // 引入路由
+import Login from '../views/login.vue' // 登录页
+import Home from '../components/home.vue' // 主页
+import WelcoMe from '../components/Welcome.vue'// 欢迎页
+import Users from '../components/user/users.vue' // 用户列表页
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     redirect: '/login'
-
   },
   {
     path: '/login',
@@ -16,7 +17,17 @@ const routes = [
   },
   {
     path: '/home',
-    component: Home
+    component: Home,
+    redirect: '/Welcome',
+    children: [{
+      path: '/Welcome',
+      component: WelcoMe
+    },
+    {
+      path: '/users',
+      component: Users
+    }
+    ]
 
   }
 
@@ -24,6 +35,16 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+// 挂载路由导航守卫
+router.beforeEach((to, from, next) => {
+  // to 将要访问的路径
+  // from 代表是从那个路径跳转进来
+  // next 代表放行 可以在next('/login')的方法里添加强制要跳转的路径
+  if (to.path === '/login') return next()
+  const tokenStr = window.sessionStorage.getItem('token')
+  if (!tokenStr) { return next('/login') }
+  next()
 })
 
 export default router
