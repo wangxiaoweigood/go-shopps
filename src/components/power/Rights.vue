@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/Welcome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-      <el-breadcrumb-item>权限列表</el-breadcrumb-item>
-    </el-breadcrumb>
     <el-card class="box-card">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/Welcome' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>权限管理</el-breadcrumb-item>
+        <el-breadcrumb-item>权限列表</el-breadcrumb-item>
+      </el-breadcrumb>
       <div class="text item">
         <template>
           <el-table :data="tableData" border style="width: 100%">
