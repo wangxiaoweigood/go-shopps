@@ -43,7 +43,6 @@
           <el-table-column prop="role_name" label="角色"></el-table-column>
           <el-table-column prop="mg_state" label="状态">
             <template slot-scope="scope">
-              <!-- {{ mg_state s}} -->
               <el-switch
                 @change="UserState(scope.row)"
                 v-model="scope.row.mg_state"
@@ -52,32 +51,40 @@
             </template>
           </el-table-column>
           <el-table-column label="操作">
+            <!-- 右侧按钮区域 -->
             <template slot-scope="scope">
-              <el-row>
+              <!-- 修改按钮 -->
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                circle
+                @click="ModifyThe(scope.row.id)"
+              ></el-button>
+              <!-- 删除按钮 -->
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                circle
+                @click="deleteData(scope.row.id)"
+              ></el-button>
+              <!-- 分配角色按钮 -->
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="分配角色"
+                placement="top-start"
+              >
                 <el-button
-                  type="primary"
-                  icon="el-icon-edit"
-                  circle
-                  @click="ModifyThe(scope.row.id)"
-                ></el-button>
-                <el-button
-                  type="danger"
-                  icon="el-icon-delete"
-                  circle
-                  @click="deleteData(scope.row.id)"
-                ></el-button>
-                <el-button
-                  @click="assignRoles"
+                  @click="assignRoles(scope.row)"
                   type="warning"
                   icon="el-icon-star-off"
                   circle
                 ></el-button>
-              </el-row>
+              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
       </template>
-      <!-- <div class="block"> -->
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -89,7 +96,7 @@
       >
       </el-pagination>
     </el-card>
-    <!-- 添加用户弹出层 -->
+    <!-- 添加用户对话框 -->
     <el-dialog
       title="添加用户"
       :visible.sync="addDialogVisible"
@@ -121,7 +128,7 @@
         <el-button type="primary" @click="AddUsers"> 确 定 </el-button>
       </span>
     </el-dialog>
-    <!-- 点击修改图标模块弹出层 -->
+    <!-- 点击修改图标模块对话框 -->
     <el-dialog
       title="修改用户"
       :visible.sync="IconToModify"
@@ -152,7 +159,33 @@
         <el-button type="primary" @click="determine"> 确 定</el-button>
       </span>
     </el-dialog>
-    <!--点击删除模块弹出层  -->
+    <!--点击分配角色对话框 -->
+    <el-dialog
+      title="分配角色"
+      :visible.sync="setRoleDialogVisible"
+      width="50%"
+      @close="setRoleDialogClosed"
+    >
+      <div>
+        <p>当前的用户：{{ userInfo.username }}</p>
+        <p>当前的角色：{{ userInfo.role_name }}</p>
+        <p>
+          分配新角色：<el-select v-model="selectRoleId" placeholder="请选择">
+            <el-option
+              v-for="item in rolesList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -192,8 +225,8 @@ export default {
       },
       // 修改表单数据modify
       modify: {},
+      rolesList: [],
       // 修改表单验证规则
-
       editFormRules: {
         email: [
           {
@@ -284,11 +317,16 @@ export default {
         ]
       },
       userlist: [],
+      selectRoleId: '',
+      // 分配角色数据
+      userInfo: [],
       total: 0,
       // 控制弹出框
       addDialogVisible: false,
       // 控制点击图标修改
-      IconToModify: false
+      IconToModify: false,
+      // 控制更改角色
+      setRoleDialogVisible: false
     }
   },
   // 生命周期页面一开始就调用此方法
@@ -355,9 +393,9 @@ export default {
     AddUsers () {
       this.$refs.addFormRes.validate(async (val) => {
         // console.log(val)
-        // if (!val) {
-        //   return this.$message.error('格式错误')
-        // }
+        if (!val) {
+          return this.$message.error('格式错误')
+        }
         const { data: res } = await this.$http.post('users', this.form)
         // console.log(res)
         if (res.meta.status !== 201) {
@@ -432,8 +470,37 @@ export default {
       this.$message.success('删除成功')
       this.ListUsers()
     },
-    assignRoles () {
-      console.log('1')
+    async assignRoles (userInfo) {
+      this.userInfo = userInfo
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取角色列表失败！')
+      }
+      this.rolesList = res.data
+      this.setRoleDialogVisible = true
+    },
+    async saveRoleInfo () {
+      if (!this.selectRoleId) {
+        return this.$message.error('请选择要分配的值')
+      }
+      const { data: res } = await this.$http.put(
+        `users/${this.userInfo.id}/role`,
+        {
+          rid: this.selectRoleId
+        }
+      )
+      if (res.meta.status !== 200) {
+        return this.$message.error('更新角色失败！')
+      }
+
+      this.$message.success('更新角色成功！')
+
+      this.setRoleDialogVisible = false
+      this.ListUsers()
+    },
+    setRoleDialogClosed () {
+      this.selectRoleId = ''
+      this.userInfo = {}
     }
   }
 }
