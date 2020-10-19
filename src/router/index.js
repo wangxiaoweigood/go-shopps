@@ -6,6 +6,7 @@ import WelcoMe from '../components/Welcome.vue'// 欢迎页
 import Users from '../components/user/users.vue' // 用户列表页
 import Right from '../components/power/Rights.vue'// 权限列表页
 import Roles from '../components/power/Roles.vue'// 角色列表页
+import Cate from '../components/goods/Cate.vue' // 商品管理/商品分类页
 Vue.use(VueRouter)
 
 const routes = [
@@ -36,6 +37,10 @@ const routes = [
     {
       path: '/roles',
       component: Roles
+    },
+    {
+      path: '/categories',
+      component: Cate
     }
     ]
 

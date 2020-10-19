@@ -265,18 +265,18 @@ export default {
     }
   },
   //   生命周期函数
-  created () {
+  created  () {
     this.RoleList()
   },
   methods: {
-    async RoleList () {
+    async RoleList  () {
       // 请求接口
       const { data: res } = await this.$http.get('roles')
       // console.log(res.data)
       this.tableData = res.data
     },
     // 点击删除按钮删除权限
-    async ClickDelete (role, rightId) {
+    async ClickDelete  (role, rightId) {
       //   console.log(role.id, rightId)
       // 弹窗提醒用户是否删除
       const remover = await this.$confirm(
@@ -306,7 +306,7 @@ export default {
       role.children = res.data
     },
     // 点击打开分配权限
-    async AssignRoles (role) {
+    async AssignRoles  (role) {
       this.roleId = role.id
       //   console.log(1)
       //   console.log(role)
@@ -318,7 +318,7 @@ export default {
       this.dialogVisible = true
     },
     // 通过递归的方式获取角色下所有的三级权限的id.保存到defKeys
-    getLeafkys (node, arr) {
+    getLeafkys  (node, arr) {
       // 如果当前node节点不包含children属性,则是三级节点
       if (!node.children) {
         return arr.push(node.id)
@@ -328,7 +328,7 @@ export default {
       })
     },
     // 点击确定吧勾选中的权限配置给后台
-    async Determine () {
+    async Determine  () {
       //   console.log('1')
 
       const keys = [
@@ -353,20 +353,20 @@ export default {
       this.RoleList()
     },
     // 监听分配授权对话框的关闭事件
-    setRightDialiog () {
+    setRightDialiog  () {
       this.defKeys = []
     },
     // 点击添加模块
-    AddingRoles () {
+    AddingRoles  () {
       console.log('1')
       this.addDialogVisible = true
     },
     //  点击添加模块退出重置表格输=数据
-    addDialog () {
+    addDialog  () {
       this.addDialogVisible = false
     },
     //  点击添加模块确定按钮去更新数据
-    AddUsers () {
+    AddUsers  () {
       this.$refs.addFormRes.validate(async (val) => {
         // console.log(val)
         if (!val) {
@@ -389,7 +389,7 @@ export default {
       // console.log(this.form)
     },
     // 点击编辑去修改角色名称and描述
-    async editor (id) {
+    async editor  (id) {
       console.log(id)
       this.DisplaysEdit = true
       const { data: res } = await this.$http.get('roles/' + id)
@@ -398,7 +398,7 @@ export default {
       console.log(this.CharacterData)
     },
     // 编辑区域 点击确定提交修改后的数据
-    EditorToDetermine () {
+    EditorToDetermine  () {
       this.$refs.addFormRes.validate(async (val) => {
         if (!val) {
           return console.log('格式错误')
@@ -423,7 +423,7 @@ export default {
       // this.$refs.addFormRes.()
     },
     // 点击删除模块 根据id去删除
-    async DeleteData (id) {
+    async DeleteData  (id) {
       console.log(id)
       const remover = await this.$confirm(
         '此操作将永久删除该用户, 是否继续?',

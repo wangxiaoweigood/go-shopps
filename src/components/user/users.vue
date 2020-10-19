@@ -71,7 +71,7 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                content="分配角色"
+                content="分配权限"
                 placement="top-start"
               >
                 <el-button
