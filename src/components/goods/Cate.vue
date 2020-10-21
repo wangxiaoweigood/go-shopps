@@ -255,7 +255,6 @@ export default {
         this.addCateForm.cat_level = this.selectedKeys.length
       } else {
         this.addCateForm.cat_pid = 0
-
         this.addCateForm.cat_level = 0
       }
     },

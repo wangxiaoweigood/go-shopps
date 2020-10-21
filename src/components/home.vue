@@ -21,6 +21,7 @@
             :collapse-transition="false"
             :collapse="isCollapse"
             unique-opened
+            :show-timeout="300"
             background-color="#333744"
             text-color="#fff"
             active-text-color="red"
