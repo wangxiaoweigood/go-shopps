@@ -9,6 +9,8 @@ import Roles from '../components/power/Roles.vue'// 角色列表页
 import Cate from '../components/goods/Cate.vue' // 商品管理/商品分类页
 import Parmas from '../components/goods/Params.vue'// 商品管理/分类参数
 import Goods from '../components/goods/Goods.vue'// 商品管理/分类参数
+import Add from '../components/goods/Add.vue'// 商品管理/商品列表/添加商品
+import List from '../components/Order/List.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -51,6 +53,14 @@ const routes = [
     {
       path: '/goods',
       component: Goods
+    },
+    {
+      path: '/goods/add',
+      component: Add
+    },
+    {
+      path: '/orders',
+      component: List
     }
     ]
 

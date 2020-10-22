@@ -345,4 +345,5 @@ export default {
 .el-cascader {
   width: 100% !important;
 }
+
 </style>
