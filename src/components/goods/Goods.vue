@@ -40,7 +40,11 @@
         </el-table-column>
         <el-table-column prop="goods_number" label="商品重量">
         </el-table-column>
-        <el-table-column prop="add_time" label="创建事件"> </el-table-column>
+        <el-table-column prop="goodslist.add_time" label="创建时间">
+          <template slot-scope="scope">
+            {{ scope.row.add_time | dataFormat }}
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <!-- 按钮区域 -->
           <template slot-scope="scope">

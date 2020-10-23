@@ -169,7 +169,7 @@ export default {
   // display: flex;
   .left-box {
     // background-color: red;
-    height: 100vh;
+    height: 100%;
   }
   .el-menu {
     border-right: none !important;

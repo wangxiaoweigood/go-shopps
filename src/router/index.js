@@ -10,7 +10,8 @@ import Cate from '../components/goods/Cate.vue' // 商品管理/商品分类页
 import Parmas from '../components/goods/Params.vue'// 商品管理/分类参数
 import Goods from '../components/goods/Goods.vue'// 商品管理/分类参数
 import Add from '../components/goods/Add.vue'// 商品管理/商品列表/添加商品
-import List from '../components/Order/List.vue'
+import List from '../components/Order/List.vue' // 订单管理
+import Reports from '../components/reports/reports.vue'// 数据统计
 Vue.use(VueRouter)
 
 const routes = [
@@ -61,6 +62,10 @@ const routes = [
     {
       path: '/orders',
       component: List
+    },
+    {
+      path: '/reports',
+      component: Reports
     }
     ]
 
